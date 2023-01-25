@@ -20,7 +20,11 @@ enum {
 
 struct shaleCPU{
     uint16_t registers[REGISTERS];
+    uint8_t *memory;
 };
 
 void initCPU(struct shaleCPU *cpu);
 void printRegisters(struct shaleCPU *cpu);
+void execute(struct shaleCPU *cpu);
+extern void nop();
+extern void move_short_immediate();

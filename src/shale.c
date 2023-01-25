@@ -1,9 +1,9 @@
 #include "include/shale.h"
 #include <stdio.h>
 
-
 const struct instruction instructions[256] = {
-    {NOP, 1, nop},
+    {NOP, "NOP", 1, nop},
+    {MVIS, "MOV", 4, move_short_immediate}
 };
 
 void initCPU(struct shaleCPU *cpu) {
@@ -19,8 +19,40 @@ void printRegisters(struct shaleCPU *cpu) {
     }
     printf("SP   : %04X\n", cpu->registers[SP]); 
     printf("FP   : %04X\n", cpu->registers[FP]); 
-    printf("FLAGS: %04X\n", cpu->registers[FLAGS]); 
+    printf("PC   : %04X\n", cpu->registers[PC]);
+    printf("FLAGS: %04X\n\n", cpu->registers[FLAGS]); 
 }
 
+uint16_t read_short(uint8_t *memory, uint16_t addr) {
+    return memory[addr] | memory[addr + 1] << 8;
+}
 
-void nop(void) {}
+enum opcode read_pc(struct shaleCPU *CPU) {
+    return CPU->memory[CPU->registers[PC]];
+}
+
+void increment_pc(struct shaleCPU *CPU) {
+    enum opcode op = read_pc(CPU);
+    CPU->registers[PC] += instructions[op].length;
+}
+
+void nop(struct shaleCPU *CPU) {
+    increment_pc(CPU);
+}
+
+void move_short_immediate(struct shaleCPU *CPU) {
+    uint8_t dest = CPU->registers[PC] + 1;
+    uint16_t src = CPU->registers[PC] + 2;
+    CPU->registers[dest] = read_short(CPU->memory, src);
+    increment_pc(CPU);
+}
+
+void execute(struct shaleCPU *CPU){
+    enum opcode op = read_pc(CPU);
+    while (op != HLT) {
+        instructions[op].operation(CPU);
+        printRegisters(CPU);
+        op = read_pc(CPU);
+    }
+    return;
+}
