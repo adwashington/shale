@@ -2,6 +2,16 @@
 #include <stdint.h>
 #include "instructions.h"
 
+union reg{
+    uint16_t hl;
+    struct
+    {
+        uint8_t l;
+        uint8_t h;
+    };
+};
+
+
 enum {
     R0,
     R1,
@@ -19,7 +29,7 @@ enum {
 };
 
 struct shaleCPU{
-    uint16_t registers[REGISTERS];
+    union reg registers[REGISTERS];
     uint8_t *memory;
 };
 
