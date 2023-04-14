@@ -8,19 +8,19 @@ const struct instruction instructions[256] = {
 
 void initCPU(struct shaleCPU *cpu) {
     for (int i = 0; i < REGISTERS; i++) {
-        cpu->registers[i] = 0;
+        cpu->registers[i].hl = 0;
     }  
 }
 
 void printRegisters(struct shaleCPU *cpu) {
     for (int i = 0; i < SP; i++) {
-        printf("R%i   : %04x", i, cpu->registers[i]);
+        printf("R%i   : %04x", i, cpu->registers[i].hl);
         (i % 2 != 0) ? printf("\n") : printf("\t");
     }
-    printf("SP   : %04X\n", cpu->registers[SP]); 
-    printf("FP   : %04X\n", cpu->registers[FP]); 
-    printf("PC   : %04X\n", cpu->registers[PC]);
-    printf("FLAGS: %04X\n\n", cpu->registers[FLAGS]); 
+    printf("SP   : %04X\n", cpu->registers[SP].hl); 
+    printf("FP   : %04X\n", cpu->registers[FP].hl); 
+    printf("PC   : %04X\n", cpu->registers[PC].hl);
+    printf("FLAGS: %04X\n\n", cpu->registers[FLAGS].hl); 
 }
 
 uint8_t read_byte(uint8_t *memory, uint16_t addr) {
@@ -40,12 +40,12 @@ void write_short(uint8_t *memory, uint16_t value ,uint16_t addr) {
 }
 
 enum opcode read_pc(struct shaleCPU *CPU) {
-    return CPU->memory[CPU->registers[PC]];
+    return CPU->memory[CPU->registers[PC].hl];
 }
 
 void increment_pc(struct shaleCPU *CPU) {
     enum opcode op = read_pc(CPU);
-    CPU->registers[PC] += instructions[op].length;
+    CPU->registers[PC].hl += instructions[op].length;
 }
 
 void nop(struct shaleCPU *CPU) {
@@ -53,9 +53,9 @@ void nop(struct shaleCPU *CPU) {
 }
 
 void move_short_immediate(struct shaleCPU *CPU) {
-    uint8_t dest = CPU->registers[PC] + 1;
-    uint16_t src = CPU->registers[PC] + 2;
-    CPU->registers[dest] = read_short(CPU->memory, src);
+    uint8_t dest = CPU->registers[PC].hl + 1;
+    uint16_t src = CPU->registers[PC].hl + 2;
+    CPU->registers[dest].hl = read_short(CPU->memory, src);
     increment_pc(CPU);
 }
 
