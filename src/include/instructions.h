@@ -4,7 +4,6 @@
 enum opcode {
     NOP,
     MVIS,
-    MVIB,
     MVS,
     MVHB,
     MVLB,
