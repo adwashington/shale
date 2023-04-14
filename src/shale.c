@@ -23,8 +23,20 @@ void printRegisters(struct shaleCPU *cpu) {
     printf("FLAGS: %04X\n\n", cpu->registers[FLAGS]); 
 }
 
+uint8_t read_byte(uint8_t *memory, uint16_t addr) {
+    return memory[addr];
+}
+
+void write_byte(uint8_t *memory, uint8_t value ,uint16_t addr) {
+    memory[addr] = value;
+}
+
 uint16_t read_short(uint8_t *memory, uint16_t addr) {
     return memory[addr] | memory[addr + 1] << 8;
+}
+
+void write_short(uint8_t *memory, uint16_t value ,uint16_t addr) {
+    memory[addr] = value;
 }
 
 enum opcode read_pc(struct shaleCPU *CPU) {
