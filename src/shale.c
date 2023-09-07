@@ -6,7 +6,9 @@
 
 const struct instruction instructions[256] = {
     {NOP, "NOP", 1, None, nop},
-    {MVIS, "MOV", 4, Immediate, move_short_immediate}
+    {MVIS, "MOV", 4, Immediate, move_short_immediate},
+    {MVIHB, "MOV", 4, Immediate, move_byte_immediate},
+    {MVILB, "MOV", 4, Immediate, move_byte_immediate}
 };
 
 void initCPU(struct shaleCPU *cpu) {
