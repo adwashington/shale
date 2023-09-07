@@ -21,10 +21,20 @@ enum opcode {
     HLT,
 };
 
+enum addressing_modes {
+    Immediate,
+    Register,
+    Absolute,
+    Indirect,
+    Indexed,
+    None
+};
+
 struct instruction {
     enum opcode opcode;
     char *mnemonic;
     uint8_t length;
+    enum addressing_modes addressing_mode;
     void (*operation)(); 
 };
 

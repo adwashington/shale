@@ -2,8 +2,8 @@
 #include <stdio.h>
 
 const struct instruction instructions[256] = {
-    {NOP, "NOP", 1, nop},
-    {MVIS, "MOV", 4, move_short_immediate}
+    {NOP, "NOP", 1, None, nop},
+    {MVIS, "MOV", 4, Immediate, move_short_immediate}
 };
 
 void initCPU(struct shaleCPU *cpu) {
