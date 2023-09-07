@@ -57,10 +57,23 @@ void nop(struct shaleCPU *CPU) {
     increment_pc(CPU);
 }
 
+void move_byte_immediate(struct shaleCPU *CPU) {
+    uint8_t dest = reg_s(PC) % FP + 1;
+    uint16_t src = reg_s(PC) + 1;
+    uint8_t val = read_byte(CPU->memory, src);
+    if(read_pc(CPU) == MVIHB) {
+        reg_b(dest, h) = val;
+    }
+    else {
+        reg_b(dest, l) = val;
+    }
+    increment_pc(CPU);
+}
+
 void move_short_immediate(struct shaleCPU *CPU) {
-    uint8_t dest = CPU->registers[PC].hl + 1;
-    uint16_t src = CPU->registers[PC].hl + 2;
-    CPU->registers[dest].hl = read_short(CPU->memory, src);
+    uint8_t dest = reg_s(PC) % FP + 1;
+    uint16_t src = reg_s(PC) + 2;
+    reg_s(dest) = read_short(CPU->memory, src);
     increment_pc(CPU);
 }
 
