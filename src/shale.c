@@ -1,6 +1,9 @@
 #include "include/shale.h"
 #include <stdio.h>
 
+#define reg_s(reg) CPU->registers[reg].hl
+#define reg_b(reg, byte) (CPU->registers[reg].byte)
+
 const struct instruction instructions[256] = {
     {NOP, "NOP", 1, None, nop},
     {MVIS, "MOV", 4, Immediate, move_short_immediate}
