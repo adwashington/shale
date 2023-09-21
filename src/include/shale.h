@@ -11,6 +11,12 @@ union reg{
     };
 };
 
+enum flags {
+    Carry = 1,
+    Zero = 2,
+    Sign = 4,
+    Negative = 8
+};
 
 enum {
     R0,
