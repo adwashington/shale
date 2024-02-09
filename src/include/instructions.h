@@ -22,11 +22,18 @@ enum opcode {
 };
 
 enum addressing_modes {
-    Immediate,
-    Register,
+    Immediate_8,
+    Immediate_16,
+    Register_16_16,
+    Register_8_8,
+    Register_16_8,
+    Register_8_16,
     Absolute,
-    Indirect,
-    Indexed,
+    Indexed_16_16,
+    Indexed_8_8,
+    Indexed_16_8,
+    Indexed_8_16,
+    Relative,
     None
 };
 
