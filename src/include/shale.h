@@ -44,3 +44,4 @@ void printRegisters(struct shaleCPU *cpu);
 void execute(struct shaleCPU *cpu);
 extern void nop();
 extern void move_short_immediate();
+extern void move_byte_immediate();
