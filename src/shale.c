@@ -89,10 +89,13 @@ void move_byte_immediate(struct shaleCPU *CPU) {
 }
 
 void move_short_immediate(struct shaleCPU *CPU) {
-    get_addressing_mode_ops(CPU, instructions[read_pc(CPU)].addressing_mode);
-    uint8_t dest = reg_s(PC) % FP + 1;
-    uint16_t src = reg_s(PC) + 2;
-    reg_s(dest) = read_short(CPU->memory, src);
+    struct instruction_format_immd16 format = get_addressing_mode_ops(CPU, instructions[read_pc()].addressing_mode).imm16;
+    if ((format.flags >> IF_Direction) & 1) {
+        write_short(CPU->memory, format.immd16, reg_s(format.dest));
+    } 
+    else {
+        reg_s(format.dest) = format.immd16;
+    }
     increment_pc(CPU);
 }
 
