@@ -38,15 +38,15 @@ enum addressing_modes {
 };
 
 enum instruction_flags {
-    IF_High_Byte       = 3,
-    IF_Sign            = 2,
-    IF_Direction       = 1,
-    IF_Size            = 6,
-    IF_High_Byte_Dst   = 4,
-    IF_High_Byte_Base  = 3,
-    IF_High_Byte_Index = 0,
-    IF_High_Byte_Src   = 7,
-    IF_Extension       = 5,
+    IF_High_Byte       = 2 << 3,
+    IF_Sign            = 2 << 2,
+    IF_Direction       = 2 << 1,
+    IF_Size            = 2 << 6,
+    IF_High_Byte_Dst   = 2 << 4,
+    IF_High_Byte_Base  = 2 << 3,
+    IF_High_Byte_Index = 2 << 0,
+    IF_High_Byte_Src   = 2 << 7,
+    IF_Extension       = 2 << 5,
 };
 
 struct instruction_format_immd8 {
