@@ -4,6 +4,7 @@
 
 #define reg_s(reg) CPU->registers[reg].hl
 #define reg_b(reg, byte) (CPU->registers[reg].byte)
+#define read_pc() read_byte(CPU->memory, CPU->registers[PC].hl)
 
 const struct instruction instructions[256] = {
     {NOP, "NOP", 1, None, nop},
@@ -65,13 +66,9 @@ void write_short(uint8_t *memory, uint16_t value ,uint16_t addr) {
     memory[addr] = value;
 }
 
-enum opcode read_pc(struct shaleCPU *CPU) {
-    return CPU->memory[CPU->registers[PC].hl];
-}
-
 void increment_pc(struct shaleCPU *CPU) {
-    enum opcode op = read_pc(CPU);
-    CPU->registers[PC].hl += instructions[op].length;
+    enum opcode op = read_pc();
+    reg_s(PC) += instructions[op].length;
 }
 
 void nop(struct shaleCPU *CPU) {
@@ -82,7 +79,7 @@ void move_byte_immediate(struct shaleCPU *CPU) {
     uint8_t dest = reg_s(PC) % FP + 1;
     uint16_t src = reg_s(PC) + 1;
     uint8_t val = read_byte(CPU->memory, src);
-    if(read_pc(CPU) == MVIHB) {
+    if(read_pc() == MVIHB) {
         reg_b(dest, h) = val;
     }
     else {
@@ -100,11 +97,11 @@ void move_short_immediate(struct shaleCPU *CPU) {
 }
 
 void execute(struct shaleCPU *CPU){
-    enum opcode op = read_pc(CPU);
+    enum opcode op = read_pc();
     while (op != HLT) {
         instructions[op].operation(CPU);
         printRegisters(CPU);
-        op = read_pc(CPU);
+        op = read_pc();
     }
     return;
 }
